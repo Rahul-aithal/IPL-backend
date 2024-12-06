@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-// 
+dotenv.config({
+    path: "./.env",
+  });
+  
 const ConnnectDb = async () => {
     try {
-        const uri =  `mongodb://localhost:27017/IPL`;
+        const uri =  `${process.env.DB_URI}IPL`;
         const connectionInstance = await mongoose.connect(uri);
 
         console.log(

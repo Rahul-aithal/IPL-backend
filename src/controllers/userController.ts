@@ -15,15 +15,28 @@ class UserController {
     res.json(users);
   });
 
-  getUserById = asyncHandler(async (req: Request, res: Response) => {
+  getFarmersById = asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
-    const user = await this.userService.getUserById(id);
+    const user = await this.userService.getFarmerById(id);
+    res.status(200).json(new ApiResponse(200,user,"Success"));
+  });
+  getBuyerById = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const user = await this.userService.getBuyerById(id);
     res.status(200).json(new ApiResponse(200,user,"Success"));
   });
 
-  createUser = asyncHandler(async (req: Request, res: Response) => {
+  createFarmer = asyncHandler(async (req: Request, res: Response) => {
     const userData = req.body;
-    const user = await this.userService.createUser(userData);
+    const user = await this.userService.createFarmerServices(userData);
+    res.status(200).json(new ApiResponse(200,user,"Success"));
+  });
+
+
+  createBuyer = asyncHandler(async (req: Request, res: Response) => {
+    const userData = req.body;
+    const user = await this.userService.createBuyerServices(userData);
+    
     res.status(200).json(new ApiResponse(200,user,"Success"));
   });
 

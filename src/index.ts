@@ -12,7 +12,7 @@ dotenv.config({
 ConnnectDb()
   .then(() => {
     app.listen(PORT, () => {
-      console.log("Server is running at port ", PORT);
+      console.log(`Server is running at port http://localhost:${PORT}`);
     });
   })
   .catch((err: Error) => {
