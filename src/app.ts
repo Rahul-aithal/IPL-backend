@@ -9,6 +9,11 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 //Routes
+app.get("/",(req:Request,res:Response)=>{
+  res.send("Hello World");
+})
+
+
 app.get("/api", (req: Request, res: Response) => {
   res.json({ ping: "pong" });
 });
