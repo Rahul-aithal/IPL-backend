@@ -9,10 +9,10 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 //Routes
-app.get("/",(req:Request,res:Response)=>{
-  res.send("Hello World");
-})
-
+app.get("/", (req: Request, res: Response) => {
+  res.setHeader("Content-Type", "text/html");
+  res.send("<h1>Welcome to IPL Backend!</h1>");
+});
 
 app.get("/api", (req: Request, res: Response) => {
   res.json({ ping: "pong" });
