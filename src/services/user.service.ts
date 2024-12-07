@@ -34,13 +34,15 @@ export class UserService {
     if (!user) {
       throw new ApiError(404, "Farmer data is missing");
     }
+    console.log("Creating a famrer");
+
     // implement logic to create farmer
     const farmer = await Farmer.findOne({ authNumber: user.authNumber });
     if (farmer) {
       throw new ApiError(400, "Farmer already exists");
     }
-
     const newFarmer = await Farmer.create(user);
+    console.log(newFarmer);
     await newFarmer.save();
 
     return newFarmer;
