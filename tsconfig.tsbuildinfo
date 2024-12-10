@@ -1,1 +1,0 @@
-{"root":["./src/app.ts","./src/index.ts","./src/controllers/usercontroller.ts","./src/db/index.ts","./src/models/buyer.model.ts","./src/models/farmer.model.ts","./src/routes/user.routes.ts","./src/services/user.service.ts","./src/utils/apierror.ts","./src/utils/apiresponse.ts","./src/utils/asynchandler.ts"],"version":"5.7.2"}

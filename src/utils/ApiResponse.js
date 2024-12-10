@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiResponse = void 0;
 class ApiResponse {
     constructor(statusCode, data, message = "Success") {
         this.statusCode = statusCode;
@@ -9,4 +6,5 @@ class ApiResponse {
         this.success = statusCode < 400;
     }
 }
-exports.ApiResponse = ApiResponse;
+
+export { ApiResponse };
