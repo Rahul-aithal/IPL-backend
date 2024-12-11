@@ -74,17 +74,17 @@ export const buyerSignup = async (req, res) => {
 // Buyer sign-in
 export const buyerSignin = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
 
         // Check if email and password are provided
-        if (!email || !password) {
+        if (!username || !password) {
             return res
                 .status(400)
                 .json({ message: "Email and password are required" });
         }
 
         // Check if buyer exists
-        const buyer = await Buyer.findOne({ email });
+        const buyer = await Buyer.findOne({ username });
         if (!buyer) {
             return res.status(404).json({ message: "Buyer not found" });
         }
