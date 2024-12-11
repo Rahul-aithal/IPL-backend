@@ -1,12 +1,48 @@
-import { Router } from "express";
-import { farmerSignup, farmerSignin } from '../controllers/Farmer.controller.js';
+import express from 'express';
+import {
+    farmerSignup,
+    farmerSignin,
+    farmerSignOut,
+    refreshAccessTokenFarmer,
+} from '../controllers/Farmer.controller.js';
+import { verifyTokenFarmer } from '../middleware/verifyJWT.middleware.js';
 
-const router = Router();
+const router = express.Router();
 
-// Sign Up route
-router.post('/signUp', farmerSignup);
+// Farmer Sign-Up Route
+router.post('/signup', async (req, res, next) => {
+  try {
+    await farmerSignup(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
 
-// Sign In route
-router.post('/signIn', farmerSignin);
+// Farmer Sign-In Route
+router.post('/signin', async (req, res, next) => {
+  try {
+    await farmerSignin(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
 
-export default router;  // Correct export syntax for ES modules
+// Farmer Sign-Out Route
+router.post('/signout',verifyTokenFarmer, async (req, res, next) => {
+  try {
+    await farmerSignOut(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
+
+// Refresh Access Token Route
+router.post('/refresh-token', async (req, res, next) => {
+  try {
+    await refreshAccessTokenFarmer(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
+
+export default router;

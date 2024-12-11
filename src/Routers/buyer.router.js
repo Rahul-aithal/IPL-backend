@@ -1,12 +1,48 @@
-import { Router } from 'express';
-import { buyerSignup, buyerSignin } from '../controllers/Buyer.controller.js';
+import express from 'express';
+import {
+    buyerSignup,
+    buyerSignin,
+    buyerSignOut,
+    refreshAccessTokenBuyer,
+} from '../controllers/Buyer.controller.js';
+import { verifyTokenBuyer } from '../middleware/verifyJWT.middleware.js';
 
-const router = Router();
+const router = express.Router();
 
-// Buyer SignUp
-router.post('/signUp', buyerSignup);
+// Buyer Sign-Up Route
+router.post('/signup', async (req, res, next) => {
+  try {
+    await buyerSignup(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
 
-// Buyer SignIn
-router.post('/signIn', buyerSignin);
+// Buyer Sign-In Route
+router.post('/signin', async (req, res, next) => {
+  try {
+    await buyerSignin(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
+
+// Buyer Sign-Out Route
+router.post('/signout', verifyTokenBuyer,async (req, res, next) => {
+  try {
+    await buyerSignOut(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
+
+// Refresh Access Token Route
+router.post('/refresh-token', async (req, res, next) => {
+  try {
+    await refreshAccessTokenBuyer(req, res);
+  } catch (error) {
+    next(error);  // Pass the error to the global error handler
+  }
+});
 
 export default router;

@@ -1,4 +1,5 @@
   import mongoose, { Schema } from "mongoose";
+  import jwt  from "jsonwebtoken";
   // Create user schema
   const byerSchema = new Schema(
     {

@@ -1,35 +1,44 @@
 import jwt from "jsonwebtoken";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/user.models.js";
+import { Farmer } from "../model/Farmer.Schema.js";
+import { Buyer } from "../model/Buyer.Schema.js";
 
-export const verifyToken = asyncHandler(async (req, res, next) => {
-    try {
-        const token = req.cookies.accessToken;
+const verifyToken = (Model) => {
+    return async (req, res, next) => {
+        try {
+            // Get token from cookies or Authorization header
+            const token = req.cookies?.accessToken || req.headers.authorization?.split(" ")[1];
 
-        if (!token) {
-            throw new ApiError(401, "Unauthorized Request");
+            if (!token) {
+                return res.status(401).json({ success: false, message: "Unauthorized Request" });
+            }
+
+            // Verify the token
+            const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+            // Find user by decoded token ID
+            const user = await Model.findById(decodedToken._id).select(
+                "-createdAt -updatedAt -refreshToken -password"
+            );
+
+            if (!user) {
+                return res.status(401).json({ success: false, message: "Invalid Access Token" });
+            }
+
+            // Attach user to request object
+            req.user = user;
+            next();
+        } catch (err) {
+            if (err.name === "TokenExpiredError") {
+                return res.status(401).json({ success: false, message: "Token has expired" });
+            } else if (err.name === "JsonWebTokenError") {
+                return res.status(401).json({ success: false, message: "Invalid Token" });
+            } else {
+                return res.status(500).json({ success: false, message: "Internal Server Error" });
+            }
         }
+    };
+};
 
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-        const user = await User.findById(decodedToken._id).select(
-            "-createdAt -updatedAt -refreshToken -password"
-        );
-
-        if (!user) {
-            throw new ApiError(401, "Invalid Access Token");
-        }
-
-        req.user = user;
-        next();
-    } catch (err) {
-        if (err.name === 'TokenExpiredError') {
-            throw new ApiError(401, "Token has expired");
-        } else if (err.name === 'JsonWebTokenError') {
-            throw new ApiError(401, "Invalid Token");
-        } else {
-            throw new ApiError(500, err.message || "Internal Server Error");
-        }
-    }
-});
+// Specific middlewares for Farmers and Buyers
+export const verifyTokenFarmer = verifyToken(Farmer);
+export const verifyTokenBuyer = verifyToken(Buyer);
