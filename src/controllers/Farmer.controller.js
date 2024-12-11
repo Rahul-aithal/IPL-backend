@@ -57,7 +57,7 @@ async function farmerSignup(req, res) {
 // Farmer Sign In
 async function farmerSignin(req, res) {
     try {
-        const { username, password } = req.body;
+        const { username, authNumber } = req.body;
 
         // Find the farmer by username
         const farmer = await Farmer.findOne({ username });
@@ -66,7 +66,7 @@ async function farmerSignin(req, res) {
         }
 
         // Compare the provided password with the stored hashed password
-        const isMatch = password === farmer.password;
+        const isMatch = authNumber === farmer.authNumber;
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid password." });
         }
