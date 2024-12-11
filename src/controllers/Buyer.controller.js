@@ -32,7 +32,7 @@ export const buyerSignup = async (req, res) => {
 
         // Check if all fields are provided
         if (!username || !email || !password || !authNumber) {
-            return res.status(400).json({ message: "All fields are required" });
+            return res.status(400).json({ message: "All fields are required",username, email, password, authNumber });
         }
 
         // Check if buyer already exists
@@ -56,7 +56,7 @@ export const buyerSignup = async (req, res) => {
 
         // Generate access and refresh tokens
         const { accessToken, refreshToken } =
-            await generateAccessAndRefereshTok(newBuyer._id);
+            await generateAccessAndRefereshTokens(newBuyer._id);
 
         // Respond with tokens
         res.status(201)
@@ -80,7 +80,7 @@ export const buyerSignin = async (req, res) => {
         if (!username || !password) {
             return res
                 .status(400)
-                .json({ message: "Email and password are required" });
+                .json({ message: "username and password are required" });
         }
 
         // Check if buyer exists
