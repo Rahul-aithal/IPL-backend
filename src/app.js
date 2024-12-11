@@ -21,7 +21,9 @@ app.use(cookieParser());
 import farmerRouter from './Routers/farmer.router.js'
 import buyerRouter from './Routers/buyer.router.js'
 
-
+app.get("/",(req,res)=>{
+    res.send("HELLO WOLRD");
+});
 //Routes declartion
 app.use('/api/farmer',farmerRouter);
 app.use('/api/buyer',buyerRouter);
