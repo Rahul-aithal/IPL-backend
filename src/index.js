@@ -1,25 +1,22 @@
 import dotenv from "dotenv";
-import ConnectDb from "./db/index.js";
+import ConnnectDb from "./db/index.js";
 import { app } from "./app.js";
 
+console.log("Starting the server...");
+
 dotenv.config({
-  path: "./.env",
+    path: './.env',
 });
 
-let dbConnected = false;
+console.log("Environment variables loaded.");
 
-// Export a serverless handler
-export default async (req, res) => {
-  if (!dbConnected) {
-    try {
-      await ConnectDb(); // Connect to the database only once
-      dbConnected = true;
-      console.log("Database connected!");
-    } catch (err) {
-      console.error("MongoDB connection failed!", err);
-      res.status(500).send("Database connection error");
-      return;
-    }
-  }
-  app(req, res); // Let Express handle the incoming request
-};
+ConnnectDb()
+    .then(() => {
+        console.log("Database connected successfully.");
+        app.listen(process.env.PORT || 8000, () => {
+            console.log(`Server is running at http://localhost:${process.env.PORT || 8000}`);
+        });
+    })
+    .catch((err) => {
+        console.error("MongoDB connection failed!", err);
+    });
