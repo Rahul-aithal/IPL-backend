@@ -1,22 +1,21 @@
 import dotenv from "dotenv";
-import ConnnectDb from "./db/index.js";
 import { app } from "./app.js";
-
-console.log("Starting the server...");
+import ConnnectDb from "./db/index.js";
 
 dotenv.config({
     path: './.env',
 });
 
-console.log("Environment variables loaded.");
-
+// Connect to the database
 ConnnectDb()
     .then(() => {
-        console.log("Database connected successfully.");
-        app.listen(process.env.PORT || 8000, () => {
-            console.log(`Server is running at http://localhost:${process.env.PORT || 8000}`);
-        });
+        console.log("Database connected.");
     })
     .catch((err) => {
-        console.error("MongoDB connection failed!", err);
+        console.error("Database connection failed:", err);
     });
+
+// Export the handler for Vercel
+export default async function handler(req, res) {
+    await app(req, res);
+}
