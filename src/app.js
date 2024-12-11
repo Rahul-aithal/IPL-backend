@@ -23,8 +23,8 @@ import buyerRouter from './Routers/buyer.router.js'
 
 
 //Routes declartion
-app.use('/api',farmerRouter);
-app.use('/api',buyerRouter);
+app.use('/api/farmer',farmerRouter);
+app.use('/api/buyer',buyerRouter);
 
 
 

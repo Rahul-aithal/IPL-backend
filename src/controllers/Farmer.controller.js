@@ -3,7 +3,7 @@ import { Farmer } from "../model/Farmer.Schema.js"; // Assuming the model is in 
 // Farmer Sign Up
 async function farmerSignup(req, res) {
     try {
-        const { username, email, authNumber, password } = req.body;
+        const { username, email, authNumber } = req.body;
 
         // Check if the farmer already exists
         const existingFarmer = await Farmer.findOne({
