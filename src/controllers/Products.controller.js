@@ -1,9 +1,8 @@
-import {Product} from "../model/Proudct.Schema.js" // Adjust the import path as necessary
+import { Product } from "../model/Proudct.Schema.js"; // Adjust the import path as necessary
 
 export const addProduct = async (req, res) => {
     try {
-        const { productName, category, price ,description, stock } =
-            req.body;
+        const { productName, category, price, description, stock } = req.body;
 
         // Validate input
         if (!productName || !category || !price || !stock) {
@@ -100,7 +99,9 @@ export const updateProduct = async (req, res) => {
 // List all products
 export const listAllProducts = async (req, res) => {
     try {
-        const products = await Product.find({}).select("-owner -updatedAt -createdAt -__v");
+        const products = await Product.find({}).select(
+            "-owner -updatedAt -createdAt -__v"
+        );
         if (products.length === 0) {
             return res.status(404).json({ message: "No products found" });
         }
@@ -149,7 +150,9 @@ export const searchProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params; // Get the product ID from the route parameters (e.g., /product/:id)
-        const product = await Product.findById(id);
+        const product = await Product.findById(id).select(
+            "-owner -updatedAt -createdAt -__v"
+        );
 
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
