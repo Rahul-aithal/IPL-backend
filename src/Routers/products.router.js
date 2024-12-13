@@ -24,6 +24,6 @@ router.get("/products", listAllProducts);
 
 router.post("/products/serach", verifyTokenFarmer, searchProducts);
 
-router.get("/prouducts/:id", verifyTokenFarmer, getProductById);
+router.get("/prouducts/:id", getProductById);
 
 export default router;
