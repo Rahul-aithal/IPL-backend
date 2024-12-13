@@ -196,4 +196,46 @@ const refreshAccessTokenFarmer = async (req, res) => {
         throw Error("Invalid refresh token");
     }
 };
-export { farmerSignup, farmerSignin, farmerSignOut, refreshAccessTokenFarmer };
+
+async function updateFarmer(req, res) {
+    try {
+        const { username, email, authNumber } = req.body;
+
+        // Find the farmer by ID
+        const farmer = await Farmer.findById(req.user._id);
+        if (!farmer) {
+            return res.status(404).json({ message: "Farmer not found." });
+        }
+
+        // Update the fields only if the new values are provided
+        if (username) {
+            farmer.username = username;
+        }
+        if (email) {
+            farmer.email = email;
+        }
+        if (authNumber) {
+            farmer.authNumber = authNumber;
+        }
+
+        // Save the updated farmer data
+        await farmer.save();
+
+        // Return the updated farmer data in response
+        res.status(200).json({
+            message: "Farmer updated successfully!",
+            farmer: {
+                username: farmer.username,
+                email: farmer.email,
+                authNumber: farmer.authNumber,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error during update.",
+        });
+    }
+}
+ 
+export { farmerSignup, farmerSignin, farmerSignOut, refreshAccessTokenFarmer,updateFarmer };

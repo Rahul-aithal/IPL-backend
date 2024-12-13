@@ -192,3 +192,49 @@ export const refreshAccessTokenBuyer = async (req, res) => {
         throw Error("Invalid refresh token");
     }
 };
+
+
+
+
+// Update Buyer Data
+export const updateBuyerData = async (req, res) => {
+    try {
+        const { userId } = req.params; // Assuming userId is passed as a URL parameter
+        const { username, email, password, authNumber } = req.body; // Fields to update
+
+        // Find the buyer by ID
+        const buyer = await Buyer.findById(userId);
+        if (!buyer) {
+            return res.status(404).json({ message: "Buyer not found" });
+        }
+
+        // Update fields
+        if (username) {
+            buyer.username = username;
+        }
+        if (email) {
+            // Check if the new email already exists
+            const existingBuyer = await Buyer.findOne({ email });
+            if (existingBuyer && existingBuyer._id.toString() !== buyer._id.toString()) {
+                return res.status(400).json({ message: "Email already in use" });
+            }
+            buyer.email = email;
+        }
+        if (authNumber) {
+            buyer.authNumber = authNumber;
+        }
+        if (password) {
+            // Hash the new password before updating
+            const hashedPassword = await bcrypt.hash(password, 10);
+            buyer.password = hashedPassword;
+        }
+
+        // Save the updated buyer
+        await buyer.save();
+
+        res.status(200).json({ message: "Buyer data updated successfully", buyer });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};

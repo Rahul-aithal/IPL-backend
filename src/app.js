@@ -20,6 +20,8 @@ app.use(cookieParser());
 
 import farmerRouter from "./Routers/farmer.router.js";
 import buyerRouter from "./Routers/buyer.router.js";
+import productRouter from "./Routers/products.router.js";
+import cartRouter from "./Routers/cart.router.js";
 
 app.get("/test", (req, res) => {
     res.send("HELLO WOLRD");
@@ -27,5 +29,7 @@ app.get("/test", (req, res) => {
 //Routes declartion
 app.use("/api/farmer", farmerRouter);
 app.use("/api/buyer", buyerRouter);
+app.use("/api", productRouter);
+app.use("/api/cart", cartRouter);
 
 export { app };

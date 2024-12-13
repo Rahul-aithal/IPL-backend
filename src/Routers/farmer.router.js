@@ -3,7 +3,7 @@ import {
     farmerSignup,
     farmerSignin,
     farmerSignOut,
-    refreshAccessTokenFarmer,
+    refreshAccessTokenFarmer,updateFarmer
 } from '../controllers/Farmer.controller.js';
 import { verifyTokenFarmer } from '../middleware/verifyJWT.middleware.js';
 
@@ -44,5 +44,8 @@ router.post('/refresh-token', async (req, res, next) => {
     next(error);  // Pass the error to the global error handler
   }
 });
+
+
+router.put("/updated",verifyTokenFarmer,updateFarmer);
 
 export default router;

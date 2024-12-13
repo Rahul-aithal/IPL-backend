@@ -4,6 +4,7 @@ import {
     buyerSignin,
     buyerSignOut,
     refreshAccessTokenBuyer,
+    updateBuyerData
 } from '../controllers/Buyer.controller.js';
 import { verifyTokenBuyer } from '../middleware/verifyJWT.middleware.js';
 
@@ -44,5 +45,7 @@ router.post('/refresh-token', async (req, res, next) => {
     next(error);  // Pass the error to the global error handler
   }
 });
+
+router.put("/buyers/:userId",verifyTokenBuyer, updateBuyerData);
 
 export default router;
